@@ -117,7 +117,6 @@ extern int nng_listen(nng_socket, const char *, nng_listener *, int);
 extern int nng_dial(nng_socket, const char *, nng_dialer *, int);
 extern int nng_dialer_create(nng_dialer *, nng_socket, const char *);
 extern int nng_listener_create(nng_listener *, nng_socket, const char *);
-extern int nng_dialer_set_cb(nng_dialer, void *);
 extern int nng_dialer_start(nng_dialer, int);
 extern int nng_listener_start(nng_listener, int);
 extern int nng_dialer_close(nng_dialer);
@@ -581,29 +580,6 @@ typedef enum {
  nng_mqtt_msg_format_binary = 0,
  nng_mqtt_msg_format_utf8 = 1,
 } nng_mqtt_msg_format_t;
-int nng_mqtt_set_msg_expiry(nng_msg *, nng_duration);
-int nng_mqtt_get_msg_expiry(nng_msg *, nng_duration *);
-int nng_mqtt_set_msg_format(nng_msg *, nng_mqtt_msg_format_t);
-int nng_mqtt_get_msg_format(nng_msg *, nng_mqtt_msg_format_t *);
-int nng_mqtt_set_msg_topic(nng_msg *, const char *);
-int nng_mqtt_set_msg_qos(nng_msg *, int);
-int nng_mqtt_get_msg_topic(nng_msg *, const char **);
-int nng_mqtt_get_msg_qos(nng_msg *, int *);
-int nng_mqtt_set_content_type(nng_msg *, const char *);
-int nng_mqtt_get_content_type(nng_msg *, const char **);
-int nng_mqtt_get_reason(nng_msg *, const char **);
-typedef struct {
- const char *up_name;
- const char *up_value;
-} nng_mqtt_user_prop_t;
-typedef struct {
- int up_count;
- nng_mqtt_user_prop_t *up_props;
-} nng_mqtt_user_props_t;
-extern int nng_mqtt_user_props_alloc(nng_mqtt_user_props_t **);
-extern int nng_mqtt_user_props_add(
-    nng_mqtt_user_props_t *, const char *, const char *);
-extern void nng_mqtt_user_props_free(nng_mqtt_user_props_t *);
 typedef enum {
  NNG_MQTT_CONNECT = 0x01,
  NNG_MQTT_CONNACK = 0x02,
