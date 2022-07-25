@@ -24,6 +24,7 @@ Pair1
 Pull0 Push0
 Pub0 Sub0
 Req0 Rep0
+Mqtt
 Socket
 Surveyor0 Respondent0
 '''.split()
@@ -159,6 +160,7 @@ class Socket:
         * :class:`Push0` / :class:`Pull0`
         * :class:`Surveyor0` / :class:`Respondent0`
         * :class:`Bus0`
+        * :class:`Mqtt`
 
     The socket initializer receives no positional arguments.  It accepts the
     following keyword arguments, with the same meaning as the :ref:`attributes
@@ -1016,6 +1018,10 @@ class Respondent0(Socket):
 
     """
     _opener = lib.nng_respondent0_open
+
+
+class Mqtt(Socket):
+    _opener = lib.nng_mqtt_client_open
 
 
 class Dialer:
