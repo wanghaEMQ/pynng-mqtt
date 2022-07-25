@@ -52,6 +52,7 @@ ffibuilder.set_source(
          #include <nng/protocol/survey0/survey.h>
          #include <nng/supplemental/tls/tls.h>
          #include <nng/transport/tls/tls.h>
+         #include <nng/mqtt/mqtt_client.h>
 
     """,
     libraries=libraries,
