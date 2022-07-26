@@ -39,9 +39,9 @@ Surveyor0 Respondent0
 def _pynng_atexit():
     lib.nng_fini()
 
+nng_opt_mqtt_connmsg = "mqtt-connect-msg"
 
 atexit.register(_pynng_atexit)
-
 
 def _ensure_can_send(thing):
     """
@@ -389,6 +389,26 @@ class Socket:
         """
         dialer = ffi.new('nng_dialer *')
         ret = lib.nng_dial(self.socket, to_char(address), dialer, flags)
+        check_err(ret)
+        # we can only get here if check_err doesn't raise
+        d_id = lib.nng_dialer_id(dialer[0])
+        py_dialer = Dialer(dialer, self)
+        self._dialers[d_id] = py_dialer
+        return py_dialer
+
+    def dial_msg(self, address, connmsg, flags=0):
+        """Dial specified ``address``
+
+        ``flags`` usually do not need to be given.
+
+        """
+        dialer = ffi.new('nng_dialer *')
+        dialerbody = dialer[0]
+        # NNG_OPT_MQTT_CONNMSG "mqtt-connect-msg"
+        lib.nng_dialer_set_ptr(dialerbody, to_char(nng_opt_mqtt_connmsg), connmsg.mqttmsg)
+        print("Dialer create...")
+        ret = lib.nng_dial(self.socket, to_char(address), dialer, flags)
+        print("Dialer created")
         check_err(ret)
         # we can only get here if check_err doesn't raise
         d_id = lib.nng_dialer_id(dialer[0])

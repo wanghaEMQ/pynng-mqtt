@@ -74,6 +74,7 @@ callbacks = """
     // https://nanomsg.github.io/nng/man/tip/nng_pipe_notify.3
     extern "Python" void _nng_pipe_cb(nng_pipe, nng_pipe_ev, void *);
 """
+
 ffibuilder.cdef(api + callbacks)
 
 if __name__ == "__main__":

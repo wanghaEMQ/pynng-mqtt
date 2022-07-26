@@ -843,11 +843,13 @@ property_data *mqtt_property_get_value(property *prop, uint8_t prop_id);
 void mqtt_property_append(property *prop_list, property *last);
 int nng_mqtt_client_open(nng_socket *);
 int nng_mqttv5_client_open(nng_socket *);
+/*
 int nng_mqtt_subscribe(nng_socket, nng_mqtt_topic_qos *, size_t, property *);
 int nng_mqtt_subscribe_aio(nng_socket, const char *, nng_aio *);
 int nng_mqtt_unsubscribe(nng_socket *, const char *);
 int nng_mqtt_unsubscribe_aio(nng_socket *, const char *, nng_aio *);
 int nng_mqtt_ctx_subscribe(nng_ctx *, const char *, nng_aio *, ...);
+*/
 typedef struct nng_tls_config nng_tls_config;
 typedef enum nng_tls_mode {
  NNG_TLS_MODE_CLIENT = 0,
