@@ -17,6 +17,7 @@ from .nng import (
     Dialer,
     Pipe,
     Message,
+    Mqttmsg,
 )
 
 from .tls import TLSConfig

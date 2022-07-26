@@ -1609,3 +1609,26 @@ class Message:
         if self._mem_freed:
             msg = 'Attempted to send the same message more than once.'
             raise pynng.MessageStateError(msg)
+
+
+class Mqttmsg:
+  def __init__(self):
+    msg_p = ffi.new('nng_msg **')
+    check_err(lib.nng_mqtt_msg_alloc(msg_p, 0))
+    msg = msg_p[0]
+    self.mqttmsg = msg
+
+  def set_packet_type(self, ptype):
+    self._packet_type = ptype
+    check_err(lib.nng_mqtt_msg_set_packet_type(self.mqttmsg, ptype))
+
+  def packet_type(self):
+    return self._packet_type
+
+  def set_connect_proto_version(self, ver):
+    self._proto_version = ver
+    check_err(lib.nng_mqtt_msg_set_connect_proto_version(self.mqttmsg, ver))
+
+  def connect_proto_version(self):
+    return self._proto_version
+
