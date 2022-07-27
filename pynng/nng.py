@@ -1632,11 +1632,10 @@ class Mqttmsg(Message):
     Message.__init__(self, msg)
 
   def set_packet_type(self, ptype):
-    self._packet_type = ptype
-    check_err(lib.nng_mqtt_msg_set_packet_type(self._nng_msg, ptype))
+    lib.nng_mqtt_msg_set_packet_type(self._nng_msg, ptype)
 
   def packet_type(self):
-    return self._packet_type
+    return lib.nng_mqtt_msg_get_packet_type(self._nng_msg)
 
   def set_connect_proto_version(self, ver):
     self._proto_version = ver
@@ -1649,17 +1648,17 @@ class Mqttmsg(Message):
     check_err(lib.nng_mqtt_msg_set_publish_payload(self._nng_msg, to_char(pld), len(pld)))
 
   def publish_payload(self):
-    pldp = ffi.new("uint8_t **")
-    lib.nng_mqtt_msg_get_publish_payload(self._nng_msg, pldp)
-    return pldp[0]
+    plenp = ffi.new("uint32_t *")
+    data = ffi.cast('char *', lib.nng_mqtt_msg_get_publish_payload(self._nng_msg, plenp))
+    return bytes(ffi.buffer(data[0:plenp[0]])).decode()
 
   def set_publish_topic(self, topic):
     check_err(lib.nng_mqtt_msg_set_publish_topic(self._nng_msg, to_char(topic)))
 
   def publish_topic(self):
-    topicp = ffi.new("uint8_t **")
-    lib.nng_mqtt_msg_get_publish_topic(self._nng_msg, topicp)
-    return topicp[0]
+    tlenp = ffi.new("uint32_t *")
+    data = ffi.cast('char *', lib.nng_mqtt_msg_get_publish_topic(self._nng_msg, tlenp))
+    return bytes(ffi.buffer(data[0:tlenp[0]])).decode()
 
   def set_subscribe_topic(self, topic, qos):
     topics = lib.nng_mqtt_topic_qos_array_create(1)

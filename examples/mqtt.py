@@ -47,6 +47,11 @@ async def main():
     await mqtt.asend_msg(submsg)
     print(f"Subscribe packet sent.")
     rmsg = await mqtt.arecv_msg() # TODO convert to mqttmsg
+    rmsg.__class__ = pynng.Mqttmsg
+    print("msg", rmsg, "arrived.")
+    print("type:   ", rmsg.packet_type())
+    print("topic:  ", rmsg.publish_topic())
+    print("payload:", rmsg.publish_payload())
 
 if __name__ == "__main__":
   try:
