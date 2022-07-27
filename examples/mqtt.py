@@ -13,7 +13,7 @@ address = "mqtt-quic://127.0.0.1:14567"
 num = 1
 
 async def main():
-    with pynng.Mqtt(quicaddr=address) as mqtt:
+    with pynng.Mqtt(address) as mqtt:
         print(f"Make a connect msg")
         connmsg = pynng.Mqttmsg()
         connmsg.set_packet_type(1) # 0x01 Connect
