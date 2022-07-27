@@ -1661,3 +1661,8 @@ class Mqttmsg(Message):
     lib.nng_mqtt_msg_get_publish_topic(self._nng_msg, topicp)
     return topicp[0]
 
+  def set_subscribe_topic(self, topic, qos):
+    topics = lib.nng_mqtt_topic_qos_array_create(1)
+    lib.nng_mqtt_topic_qos_array_set(topics, 0, to_char(topic), qos)
+    lib.nng_mqtt_msg_set_subscribe_topics(self._nng_msg, topics, 1)
+
