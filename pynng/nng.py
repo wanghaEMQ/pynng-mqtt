@@ -407,7 +407,7 @@ class Socket:
         check_err(ret)
         dialerbody = dialer[0]
         # NNG_OPT_MQTT_CONNMSG "mqtt-connect-msg"
-        ret = lib.nng_dialer_set_ptr(dialerbody, to_char(nng_opt_mqtt_connmsg), connmsg.mqttmsg)
+        ret = lib.nng_dialer_set_ptr(dialerbody, to_char(nng_opt_mqtt_connmsg), connmsg._nng_msg)
         check_err(ret)
         ret = lib.nng_dialer_start(dialerbody, flags)
         check_err(ret)
@@ -1613,24 +1613,40 @@ class Message:
             raise pynng.MessageStateError(msg)
 
 
-class Mqttmsg:
+class Mqttmsg(Message):
   def __init__(self):
     msg_p = ffi.new('nng_msg **')
     check_err(lib.nng_mqtt_msg_alloc(msg_p, 0))
     msg = msg_p[0]
-    self.mqttmsg = msg
+    Message.__init__(self, msg)
 
   def set_packet_type(self, ptype):
     self._packet_type = ptype
-    check_err(lib.nng_mqtt_msg_set_packet_type(self.mqttmsg, ptype))
+    check_err(lib.nng_mqtt_msg_set_packet_type(self._nng_msg, ptype))
 
   def packet_type(self):
     return self._packet_type
 
   def set_connect_proto_version(self, ver):
     self._proto_version = ver
-    check_err(lib.nng_mqtt_msg_set_connect_proto_version(self.mqttmsg, ver))
+    check_err(lib.nng_mqtt_msg_set_connect_proto_version(self._nng_msg, ver))
 
   def connect_proto_version(self):
-    return self._proto_version
+    return lib.nng_mqtt_msg_get_packet_type(self._nng_msg)
+
+  def set_publish_payload(self, pld):
+    check_err(lib.nng_mqtt_msg_set_publish_payload(self._nng_msg, to_char(pld), len(pld)))
+
+  def publish_payload(self):
+    pldp = ffi.new("uint8_t **")
+    lib.nng_mqtt_msg_get_publish_payload(self._nng_msg, pldp)
+    return pldp[0]
+
+  def set_publish_topic(self, topic):
+    check_err(lib.nng_mqtt_msg_set_publish_topic(self._nng_msg, to_char(topic)))
+
+  def publish_topic(self):
+    topicp = ffi.new("uint8_t **")
+    lib.nng_mqtt_msg_get_publish_topic(self._nng_msg, topicp)
+    return topicp[0]
 

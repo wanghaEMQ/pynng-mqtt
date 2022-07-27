@@ -10,21 +10,22 @@ import curio
 
 address = "mqtt-tcp://127.0.0.1:1883"
 
+num = 1
+
 async def main():
     with pynng.Mqtt() as mqtt:
         print(f"Make a connect msg")
-        mqttmsg = pynng.Mqttmsg()
-        mqttmsg.set_packet_type(1) # 0x01 Connect
-        mqttmsg.set_connect_proto_version(4) # MqttV311
+        connmsg = pynng.Mqttmsg()
+        connmsg.set_packet_type(1) # 0x01 Connect
+        connmsg.set_connect_proto_version(4) # MqttV311
         print(f"Dialer start.")
-        mqtt.dial_msg(address, mqttmsg)
-        print(f"dialer done.")
-        """
-        await node1()
-
-        await n0.cancel()
-        """
-
+        mqtt.dial_msg(address, connmsg)
+        print(f"Connection packet sent.")
+        pubmsg = pynng.Mqttmsg()
+        pubmsg.set_packet_type(3) # 0x03 Publish
+        pubmsg.set_publish_payload("Hello")
+        pubmsg.set_publish_topic("topic")
+        await mqtt.asend_msg(pubmsg)
 
 if __name__ == "__main__":
     try:
