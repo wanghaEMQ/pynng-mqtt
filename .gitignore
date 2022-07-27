@@ -11,7 +11,6 @@ __pycache__
 dist
 *.egg-info
 build
-nng/
 mbedtls/
 .eggs
 .venv/
