@@ -294,6 +294,8 @@ class Socket:
                  reconnect_time_min=None,
                  reconnect_time_max=None,
                  opener=None,
+                 quicopener=None,
+                 quicaddr=None,
                  block_on_dial=None,
                  name=None,
                  tls_config=None,
@@ -312,9 +314,12 @@ class Socket:
         self._socket = ffi.new('nng_socket *',)
         if opener is not None:
             self._opener = opener
-        if opener is None and not hasattr(self, '_opener'):
+        if opener is None and not hasattr(self, '_opener') and quicopener is None:
             raise TypeError('Cannot directly instantiate a Socket.  Try a subclass.')
-        check_err(self._opener(self._socket))
+        if quicopener is not None:
+            check_err(self.quicopener(self._socket, quicaddr))
+        if _opener is not None:
+            check_err(self._opener(self._socket))
         if tls_config is not None:
             self.tls_config = tls_config
         if recv_timeout is not None:
@@ -1043,7 +1048,7 @@ class Respondent0(Socket):
 
 
 class Mqtt(Socket):
-    _opener = lib.nng_mqtt_client_open
+    quicopener = lib.nng_mqtt_quic_client_open
 
 
 class Dialer:

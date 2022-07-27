@@ -8,18 +8,19 @@ This is the only reliable messaging pattern in the suite, as it automatically wi
 import pynng
 import curio
 
-address = "mqtt-tcp://127.0.0.1:1883"
+address = "mqtt-quic://127.0.0.1:14567"
 
 num = 1
 
 async def main():
-    with pynng.Mqtt() as mqtt:
+    with pynng.Mqtt(quicaddr=address) as mqtt:
         print(f"Make a connect msg")
         connmsg = pynng.Mqttmsg()
         connmsg.set_packet_type(1) # 0x01 Connect
         connmsg.set_connect_proto_version(4) # MqttV311
-        print(f"Dialer start.")
-        mqtt.dial_msg(address, connmsg)
+        await mqtt.asend_msg(connmsg)
+        # print(f"Dialer start.")
+        # mqtt.dial_msg(address, connmsg)
         print(f"Connection packet sent.")
         pubmsg = pynng.Mqttmsg()
         pubmsg.set_packet_type(3) # 0x03 Publish
