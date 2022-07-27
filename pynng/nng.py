@@ -403,13 +403,15 @@ class Socket:
 
         """
         dialer = ffi.new('nng_dialer *')
+        ret = lib.nng_dialer_create(dialer, self._socket[0], to_char(address))
+        check_err(ret)
         dialerbody = dialer[0]
         # NNG_OPT_MQTT_CONNMSG "mqtt-connect-msg"
-        lib.nng_dialer_set_ptr(dialerbody, to_char(nng_opt_mqtt_connmsg), connmsg.mqttmsg)
-        print("Dialer create...")
-        ret = lib.nng_dial(self.socket, to_char(address), dialer, flags)
-        print("Dialer created")
+        ret = lib.nng_dialer_set_ptr(dialerbody, to_char(nng_opt_mqtt_connmsg), connmsg.mqttmsg)
         check_err(ret)
+        ret = lib.nng_dialer_start(dialerbody, flags)
+        check_err(ret)
+        # ret = lib.nng_dial(self.socket, to_char(address), dialer, flags)
         # we can only get here if check_err doesn't raise
         d_id = lib.nng_dialer_id(dialer[0])
         py_dialer = Dialer(dialer, self)
