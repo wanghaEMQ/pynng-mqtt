@@ -23,7 +23,7 @@ if sys.platform == 'win32':
     libraries = ['Ws2_32', 'Advapi32']
 else:
     objects = ['./nng/build/libnng.a', "./mbedtls/prefix/lib/libmbedtls.a",
-               "./mbedtls/prefix/lib/libmbedx509.a", "./mbedtls/prefix/lib/libmbedcrypto.a"]
+               "./mbedtls/prefix/lib/libmbedx509.a", "./mbedtls/prefix/lib/libmbedcrypto.a", "/usr/local/lib/libmsquic.so.2"]
     libraries = ['pthread']
     machine = os.uname().machine
     # this is a pretty heuristic... but let's go with it anyway.
