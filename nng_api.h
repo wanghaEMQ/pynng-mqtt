@@ -850,6 +850,11 @@ int nng_mqtt_unsubscribe(nng_socket *, const char *);
 int nng_mqtt_unsubscribe_aio(nng_socket *, const char *, nng_aio *);
 int nng_mqtt_ctx_subscribe(nng_ctx *, const char *, nng_aio *, ...);
 */
+int nng_mqtt_quic_client_open(nng_socket *, const char *url);
+int nng_mqtt_quic_set_connect_cb(nng_socket *, int (*cb)(void *, void *), void *arg);
+int nng_mqtt_quic_set_disconnect_cb(nng_socket *, int (*cb)(void *, void *), void *arg);
+int nng_mqtt_quic_set_msg_recv_cb(nng_socket *, int (*cb)(void *, void *), void *arg);
+int nng_mqtt_quic_set_msg_send_cb(nng_socket *, int (*cb)(void *, void *), void *arg);
 typedef struct nng_tls_config nng_tls_config;
 typedef enum nng_tls_mode {
  NNG_TLS_MODE_CLIENT = 0,

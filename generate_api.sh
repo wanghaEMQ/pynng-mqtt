@@ -29,6 +29,7 @@ process_header nng/include/nng/protocol/reqrep0/rep.h >> nng_api.h
 process_header nng/include/nng/protocol/survey0/survey.h >> nng_api.h
 process_header nng/include/nng/protocol/survey0/respond.h >> nng_api.h
 process_header nng/include/nng/mqtt/mqtt_client.h >> nng_api.h
+process_header nng/include/nng/mqtt/mqtt_quic.h >> nng_api.h
 
 # nng_tls_config_{pass,key} have only stub implementations, and are
 # undefined when building with mbedtls. so we explicitly exclude them

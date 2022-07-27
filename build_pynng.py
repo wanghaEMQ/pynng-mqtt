@@ -53,6 +53,7 @@ ffibuilder.set_source(
          #include <nng/supplemental/tls/tls.h>
          #include <nng/transport/tls/tls.h>
          #include <nng/mqtt/mqtt_client.h>
+         #include <nng/mqtt/mqtt_quic.h>
 
     """,
     libraries=libraries,
