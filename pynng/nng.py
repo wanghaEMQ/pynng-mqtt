@@ -146,6 +146,7 @@ class NotImplementedOption(_NNGOption):
     def __set__(self, instance, value):
         raise NotImplementedError(self.errmsg)
 
+_quicaddr = "mqtt-quic://127.0.0.1:14567"
 
 class Socket:
     """
@@ -314,12 +315,10 @@ class Socket:
         self._socket = ffi.new('nng_socket *',)
         if opener is not None:
             self._opener = opener
-        if quicaddr is not None:
-            self._quicaddr = quicaddr
         if opener is None and quicopener is None and not hasattr(self, '_opener') and not hasattr(self, '_quicopener'):
             raise TypeError('Cannot directly instantiate a Socket.  Try a subclass.')
         if hasattr(self, '_quicopener'):
-            check_err(self._quicopener(self._socket, to_char(self._quicaddr)))
+            check_err(self._quicopener(self._socket, to_char(_quicaddr)))
         if hasattr(self, '_opener'):
             check_err(self._opener(self._socket))
         if tls_config is not None:
@@ -1051,9 +1050,9 @@ class Respondent0(Socket):
 
 class Mqtt(Socket):
   _quicopener = lib.nng_mqtt_quic_client_open
-  _quicaddr="mqtt-quic://127.0.0.1:14567"
   def __init__(self, address, **kwargs):
     if address:
+      global _quicaddr
       _quicaddr = address
     super().__init__(**kwargs)
 
