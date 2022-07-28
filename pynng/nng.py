@@ -1644,6 +1644,12 @@ class Mqttmsg(Message):
   def connect_proto_version(self):
     return lib.nng_mqtt_msg_get_packet_type(self._nng_msg)
 
+  def set_connect_keep_alive(self, ka):
+    lib.nng_mqtt_msg_set_connect_keep_alive(self._nng_msg, ka)
+
+  def set_connect_clean_session(self, clean_session):
+    lib.nng_mqtt_msg_set_connect_clean_session(self._nng_msg, clean_session)
+
   def set_publish_payload(self, pld):
     check_err(lib.nng_mqtt_msg_set_publish_payload(self._nng_msg, to_char(pld), len(pld)))
 

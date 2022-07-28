@@ -8,7 +8,7 @@ This is the only reliable messaging pattern in the suite, as it automatically wi
 import pynng
 import curio
 
-address = "mqtt-quic://127.0.0.1:14567"
+address = "mqtt-quic://54.75.171.11:14567"
 
 async def main():
   with pynng.Mqtt(address) as mqtt:
@@ -16,6 +16,8 @@ async def main():
     connmsg = pynng.Mqttmsg()
     connmsg.set_packet_type(1) # 0x01 Connect
     connmsg.set_connect_proto_version(4) # MqttV311
+    connmsg.set_connect_keep_alive(60)
+    connmsg.set_connect_clean_session(True)
     await mqtt.asend_msg(connmsg)
     print(f"Connection packet sent.")
     submsg = pynng.Mqttmsg()
