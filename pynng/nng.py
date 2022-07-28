@@ -1052,8 +1052,9 @@ class Respondent0(Socket):
 class Mqtt(Socket):
   _quicopener = lib.nng_mqtt_quic_client_open
   _quicaddr="mqtt-quic://127.0.0.1:14567"
-  def __init__(self, address=_quicaddr, **kwargs):
-    _quicaddr = address
+  def __init__(self, address, **kwargs):
+    if address:
+      _quicaddr = address
     super().__init__(**kwargs)
 
 

@@ -8,9 +8,7 @@ This is the only reliable messaging pattern in the suite, as it automatically wi
 import pynng
 import curio
 
-address = "mqtt-quic://54.75.171.11:14567"
-
-num = 1
+address = "mqtt-quic://127.0.0.1:14567"
 
 async def main():
   with pynng.Mqtt(address) as mqtt:
