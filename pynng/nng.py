@@ -1666,6 +1666,12 @@ class Mqttmsg(Message):
     data = ffi.cast('char *', lib.nng_mqtt_msg_get_publish_topic(self._nng_msg, tlenp))
     return bytes(ffi.buffer(data[0:tlenp[0]])).decode()
 
+  def set_publish_qos(self, qos):
+    lib.nng_mqtt_msg_set_publish_qos(self._nng_msg, qos)
+
+  def publish_qos(self):
+    return lib.nng_mqtt_msg_get_publish_qos(self._nng_msg)
+
   def set_subscribe_topic(self, topic, qos):
     topics = lib.nng_mqtt_topic_qos_array_create(1)
     lib.nng_mqtt_topic_qos_array_set(topics, 0, to_char(topic), qos)

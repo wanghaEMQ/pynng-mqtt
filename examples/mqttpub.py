@@ -22,6 +22,7 @@ async def main():
     pubmsg.set_packet_type(3) # 0x03 Publish
     pubmsg.set_publish_payload("Hello")
     pubmsg.set_publish_topic("topic")
+    pubmsg.set_publish_qos(1) # qos is 1
     await mqtt.asend_msg(pubmsg)
     print(f"Publish packet sent.")
 
