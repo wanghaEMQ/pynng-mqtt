@@ -5,8 +5,11 @@ Like Pipeline, it also can perform load-balancing.
 This is the only reliable messaging pattern in the suite, as it automatically will retry if a request is not matched with a response.
 
 """
+import sys
 import pynng
 import curio
+
+helper = "Usage:\n\tmqttsub.py <topic> <qos>"
 
 address = "mqtt-quic://127.0.0.1:14567"
 
@@ -22,7 +25,7 @@ async def main():
     print(f"Connection packet sent.")
     submsg = pynng.Mqttmsg()
     submsg.set_packet_type(8) # 0x08 Subscribe
-    submsg.set_subscribe_topic("topic", 1) # topic With Qos 1
+    submsg.set_subscribe_topic(sys.argv[1], int(sys.argv[2])) # Topic and qos
     await mqtt.asend_msg(submsg)
     print(f"Subscribe packet sent.")
     while True:
@@ -35,6 +38,9 @@ async def main():
       print("payload:", rmsg.publish_payload())
 
 if __name__ == "__main__":
+  if len(sys.argv) != 3:
+    print(helper)
+    exit(0)
   try:
     curio.run(main)
   except KeyboardInterrupt:
