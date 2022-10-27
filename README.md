@@ -3,6 +3,8 @@ This is pynng-mqtt. A extension for NanoSDK.
 
 The origin README of pynng is located on ./README.md.pynng
 
+The msgs send or receive on QUIC by default in this project.
+
 Requirements
 -----
 
