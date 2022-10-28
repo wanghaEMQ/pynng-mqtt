@@ -38,7 +38,7 @@ Install msquic to system.
 
 ```
 cd nng/extern/msquic
-mkdir -f build
+mkdir -p build
 cd build
 cmake ..
 make -j8
