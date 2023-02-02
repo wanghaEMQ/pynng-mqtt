@@ -11,17 +11,17 @@ import curio
 
 helper = "Usage:\n\tmqttsub.py <topic> <qos>"
 
-address = "mqtt-quic://127.0.0.1:14567"
+address = "mqtt-tcp://192.168.1.238:1883"
 
 async def main():
-  with pynng.Mqtt(address) as mqtt:
+  with pynng.Mqtt_tcp(address) as mqtt:
     print(f"Make a connect msg")
     connmsg = pynng.Mqttmsg()
     connmsg.set_packet_type(1) # 0x01 Connect
     connmsg.set_connect_proto_version(4) # MqttV311
     connmsg.set_connect_keep_alive(60)
     connmsg.set_connect_clean_session(True)
-    await mqtt.asend_msg(connmsg)
+    mqtt.dial_msg(address, connmsg)
     print(f"Connection packet sent.")
     submsg = pynng.Mqttmsg()
     submsg.set_packet_type(8) # 0x08 Subscribe

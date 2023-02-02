@@ -11,15 +11,15 @@ import curio
 
 helper = "Usage:\n\tmqttpub.py <topic> <qos> <payload>"
 
-address = "mqtt-quic://127.0.0.1:14567"
+address = "mqtt-tcp://192.168.1.238:1883"
 
 async def main():
-  with pynng.Mqtt(address) as mqtt:
+  with pynng.Mqtt_tcp(address) as mqtt:
     print(f"Make a connect msg")
     connmsg = pynng.Mqttmsg()
     connmsg.set_packet_type(1) # 0x01 Connect
     connmsg.set_connect_proto_version(4) # MqttV311
-    await mqtt.asend_msg(connmsg)
+    mqtt.dial_msg(address, connmsg)
     print(f"Connection packet sent.")
     pubmsg = pynng.Mqttmsg()
     pubmsg.set_packet_type(3) # 0x03 Publish
