@@ -1657,6 +1657,12 @@ class Mqttmsg(Message):
   def set_connect_keep_alive(self, ka):
     lib.nng_mqtt_msg_set_connect_keep_alive(self._nng_msg, ka)
 
+  def set_connect_username(self, username):
+    lib.nng_mqtt_msg_set_connect_user_name(self._nng_msg, to_char(username))
+
+  def set_connect_password(self, pwd):
+    lib.nng_mqtt_msg_set_connect_password(self._nng_msg, to_char(pwd))
+
   def set_connect_clean_session(self, clean_session):
     lib.nng_mqtt_msg_set_connect_clean_session(self._nng_msg, clean_session)
 
