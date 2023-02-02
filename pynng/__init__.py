@@ -9,7 +9,7 @@ from .nng import (
     Pub0, Sub0,
     Req0, Rep0,
     Surveyor0, Respondent0,
-    Mqtt,
+    Mqtt_tcp, Mqtt_quic,
 
     Context,
     Socket,

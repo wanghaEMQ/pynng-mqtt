@@ -146,7 +146,7 @@ class NotImplementedOption(_NNGOption):
     def __set__(self, instance, value):
         raise NotImplementedError(self.errmsg)
 
-_quicaddr = "mqtt-quic://127.0.0.1:14567"
+_mqttaddr = "mqtt-quic://127.0.0.1:14567"
 
 class Socket:
     """
@@ -161,7 +161,8 @@ class Socket:
         * :class:`Push0` / :class:`Pull0`
         * :class:`Surveyor0` / :class:`Respondent0`
         * :class:`Bus0`
-        * :class:`Mqtt`
+        * :class:`Mqtt_tcp`
+        * :class:`Mqtt_quic`
 
     The socket initializer receives no positional arguments.  It accepts the
     following keyword arguments, with the same meaning as the :ref:`attributes
@@ -315,10 +316,12 @@ class Socket:
         self._socket = ffi.new('nng_socket *',)
         if opener is not None:
             self._opener = opener
-        if opener is None and quicopener is None and not hasattr(self, '_opener') and not hasattr(self, '_quicopener'):
+        if opener is None and quicopener is None and not hasattr(self, '_opener') and not hasattr(self, '_quicopener') and not hasattr(self, '_tcpopener'):
             raise TypeError('Cannot directly instantiate a Socket.  Try a subclass.')
         if hasattr(self, '_quicopener'):
-            check_err(self._quicopener(self._socket, to_char(_quicaddr)))
+            check_err(self._quicopener(self._socket, to_char(_mqttaddr)))
+        if hasattr(self, '_tcpopener'):
+            check_err(self._tcpopener(self._socket))
         if hasattr(self, '_opener'):
             check_err(self._opener(self._socket))
         if tls_config is not None:
@@ -1048,14 +1051,21 @@ class Respondent0(Socket):
     _opener = lib.nng_respondent0_open
 
 
-class Mqtt(Socket):
+class Mqtt_quic(Socket):
   _quicopener = lib.nng_mqtt_quic_client_open
   def __init__(self, address, **kwargs):
     if address:
-      global _quicaddr
-      _quicaddr = address
+      global _mqttaddr
+      _mqttaddr = address
     super().__init__(**kwargs)
 
+class Mqtt_tcp(Socket):
+  _tcpopener = lib.nng_mqtt_client_open
+  def __init__(self, address, **kwargs):
+    if address:
+      global _mqttaddr
+      _mqttaddr = address
+    super().__init__(**kwargs)
 
 class Dialer:
     """The Python version of `nng_dialer
