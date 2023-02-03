@@ -1666,13 +1666,18 @@ class Mqttmsg(Message):
   def set_connect_clean_session(self, clean_session):
     lib.nng_mqtt_msg_set_connect_clean_session(self._nng_msg, clean_session)
 
-  def set_publish_payload(self, pld):
-    check_err(lib.nng_mqtt_msg_set_publish_payload(self._nng_msg, to_char(pld), len(pld)))
+  def set_publish_payload(self, pld, sz):
+    check_err(lib.nng_mqtt_msg_set_publish_payload(self._nng_msg, to_char(pld), sz))
 
   def publish_payload(self):
     plenp = ffi.new("uint32_t *")
     data = ffi.cast('char *', lib.nng_mqtt_msg_get_publish_payload(self._nng_msg, plenp))
     return bytes(ffi.buffer(data[0:plenp[0]])).decode()
+
+  def publish_payload_sz(self):
+    plenp = ffi.new("uint32_t *")
+    data = ffi.cast('char *', lib.nng_mqtt_msg_get_publish_payload(self._nng_msg, plenp))
+    return int(plenp[0])
 
   def set_publish_topic(self, topic):
     check_err(lib.nng_mqtt_msg_set_publish_topic(self._nng_msg, to_char(topic)))
