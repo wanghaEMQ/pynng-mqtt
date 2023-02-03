@@ -37,7 +37,7 @@ async def main():
       print("type:   ", rmsg.packet_type())
       print("qos:    ", rmsg.publish_qos())
       print("topic:  ", rmsg.publish_topic())
-      print("payload:", rmsg.publish_payload())
+      print("payload:", rmsg.publish_payload(), "(", rmsg.publish_payload_sz(), ")")
 
 if __name__ == "__main__":
   if len(sys.argv) != 3:

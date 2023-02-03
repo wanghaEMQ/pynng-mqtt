@@ -23,13 +23,17 @@ async def main():
     connmsg.set_connect_password("alvin123")
     await mqtt.asend_msg(connmsg)
     print(f"Connect packet sent.")
-    pubmsg = pynng.Mqttmsg()
-    pubmsg.set_packet_type(3) # 0x03 Publish
-    pubmsg.set_publish_payload(sys.argv[3])
-    pubmsg.set_publish_topic(sys.argv[1])
-    pubmsg.set_publish_qos(int(sys.argv[2]))
-    await mqtt.asend_msg(pubmsg)
-    print(f"Publish packet sent.")
+    for i in range(20):
+        pubmsg = pynng.Mqttmsg()
+        pubmsg.set_packet_type(3) # 0x03 Publish
+        pubmsg.set_publish_topic(sys.argv[1])
+        pubmsg.set_publish_qos(int(sys.argv[2]))
+        pld = sys.argv[3]
+        for j in range(i-1):
+            pld += pld
+        pubmsg.set_publish_payload(pld, len(pld))
+        await mqtt.asend_msg(pubmsg)
+        print(f"Publish packet sent.", i)
 
 if __name__ == "__main__":
   if len(sys.argv) != 4:
