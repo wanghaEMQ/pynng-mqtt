@@ -14,7 +14,7 @@ helper = "Usage:\n\tmqttsub.py <topic> <qos>"
 address = "mqtt-quic://127.0.0.1:14567"
 
 async def main():
-  with pynng.Mqtt_tcp(address) as mqtt:
+  with pynng.Mqtt_quic(address) as mqtt:
     print(f"Make a connect msg")
     connmsg = pynng.Mqttmsg()
     connmsg.set_packet_type(1) # 0x01 Connect
@@ -23,8 +23,8 @@ async def main():
     connmsg.set_connect_password("alvin123")
     connmsg.set_connect_keep_alive(60)
     connmsg.set_connect_clean_session(True)
-    print(f"Connection packet sent.")
     await mqtt.asend_msg(connmsg)
+    print(f"Connection packet sent.")
     submsg = pynng.Mqttmsg()
     submsg.set_packet_type(8) # 0x08 Subscribe
     submsg.set_subscribe_topic(sys.argv[1], int(sys.argv[2])) # Topic and qos
