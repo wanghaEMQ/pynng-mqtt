@@ -7,7 +7,7 @@ This is the only reliable messaging pattern in the suite, as it automatically wi
 """
 import sys
 import pynng
-import curio
+import asyncio
 
 helper = "Usage:\n\tmqttpub.py <topic> <qos> <payload>"
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     print(helper)
     exit(0)
   try:
-    curio.run(main)
+    asyncio.run(main())
   except KeyboardInterrupt:
     # that's the way the program *should* end
     exit(0)
