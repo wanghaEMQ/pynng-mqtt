@@ -887,7 +887,6 @@ int nng_mqtt_unsubscribe(nng_socket, nng_mqtt_topic *, size_t, property *);
 int nng_mqtt_unsubscribe_async(
     nng_mqtt_client *, nng_mqtt_topic *sbs, size_t count, property *pl);
 int nng_mqtt_disconnect(nng_socket *, uint8_t, property *);
-int nng_mqtt_ctx_subscribe(nng_ctx *, const char *, nng_aio *, ...);
 typedef struct nng_mqtt_sqlite_option nng_mqtt_sqlite_option;
 typedef struct conf_tls conf_tls;
 typedef struct conf_quic conf_quic;
@@ -930,8 +929,6 @@ int nng_mqtt_quic_set_msg_send_cb(
     nng_socket *, int (*cb)(void *, void *), void *arg);
 int nng_mqtt_quic_ack_callback_set(
     nng_socket *sock, void (*cb)(void *), void *arg);
-int nng_mqtt_quic_set_config(
-    nng_socket *sock, void *node);
 typedef struct nng_tls_config nng_tls_config;
 typedef enum nng_tls_mode {
  NNG_TLS_MODE_CLIENT = 0,
