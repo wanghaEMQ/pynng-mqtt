@@ -27,7 +27,7 @@ async def main():
     print(f"Connection packet sent.")
     submsg = pynng.Mqttmsg()
     submsg.set_packet_type(8) # 0x08 Subscribe
-    submsg.set_subscribe_topic(sys.argv[1], int(sys.argv[2])) # Topic and qos
+    submsg.set_subscribe_topic(sys.argv[1], len(sys.argv[1]), int(sys.argv[2]), 0, 0, 0) # Topic and qos
     await mqtt.asend_msg(submsg)
     print(f"Subscribe packet sent.")
     while True:

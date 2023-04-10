@@ -1693,8 +1693,12 @@ class Mqttmsg(Message):
   def publish_qos(self):
     return lib.nng_mqtt_msg_get_publish_qos(self._nng_msg)
 
-  def set_subscribe_topic(self, topic, qos):
+# nl: no local.
+# rap: retain as publish.
+# rh: retain handling.
+# nl, rap, rh options are valid only when mqttv5.
+  def set_subscribe_topic(self, topic, topic_sz, qos, nl, rap, rh):
     topics = lib.nng_mqtt_topic_qos_array_create(1)
-    lib.nng_mqtt_topic_qos_array_set(topics, 0, to_char(topic), qos)
+    lib.nng_mqtt_topic_qos_array_set(topics, 0, to_char(topic), topic_sz, qos, nl, rap, rh)
     lib.nng_mqtt_msg_set_subscribe_topics(self._nng_msg, topics, 1)
 
