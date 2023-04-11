@@ -45,6 +45,8 @@ if __name__ == "__main__":
     exit(0)
   try:
     asyncio.run(main())
+  except pynng.exceptions.NNGException:
+    print("Connection closed")
   except KeyboardInterrupt:
     # that's the way the program *should* end
     exit(0)
