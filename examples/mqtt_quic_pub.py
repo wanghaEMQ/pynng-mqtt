@@ -33,7 +33,8 @@ async def main():
             pld += pld
         pubmsg.set_publish_payload(pld, len(pld))
         await mqtt.asend_msg(pubmsg)
-        print(f"Publish packet sent.", i)
+        print(f"Publish packet sent.", len(pld))
+        await asyncio.sleep(0.5)
 
 if __name__ == "__main__":
   if len(sys.argv) != 4:
