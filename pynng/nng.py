@@ -147,6 +147,7 @@ class NotImplementedOption(_NNGOption):
         raise NotImplementedError(self.errmsg)
 
 _mqttaddr = "mqtt-quic://127.0.0.1:14567"
+_quic_tls_config = 0
 
 class Socket:
     """
@@ -319,7 +320,10 @@ class Socket:
         if opener is None and quicopener is None and not hasattr(self, '_opener') and not hasattr(self, '_quicopener') and not hasattr(self, '_tcpopener'):
             raise TypeError('Cannot directly instantiate a Socket.  Try a subclass.')
         if hasattr(self, '_quicopener'):
-            check_err(self._quicopener(self._socket, to_char(_mqttaddr)))
+            if hasattr(self, '_quic_tls'):
+                check_err(self._quicopener(self._socket, to_char(_mqttaddr), _quic_tls_config))
+            else:
+                check_err(self._quicopener(self._socket, to_char(_mqttaddr)))
         if hasattr(self, '_tcpopener'):
             check_err(self._tcpopener(self._socket))
         if hasattr(self, '_opener'):
@@ -1057,6 +1061,35 @@ class Mqtt_quic(Socket):
     if address:
       global _mqttaddr
       _mqttaddr = address
+    super().__init__(**kwargs)
+
+class Mqtt_quic_tls(Socket):
+  _quicopener = lib.nng_mqtt_quic_client_open_conf
+  _quic_tls = 1
+  def __init__(self, address,
+          cafile=None,
+          certfile=None,
+          keyfile=None,
+          key_pwd=None,
+          verify_peer=None,
+          multi_stream=None,
+          qos_first=None,
+          qkeepalive=None,
+          qconnect_timeout=None,
+          qdiscon_timeout=None,
+          qidle_timeout=None, **kwargs):
+    if address:
+      global _mqttaddr
+      _mqttaddr = address
+    global _quic_tls_config
+    conf_quic_p = pynng.ffi.new('conf_quic **')
+    if key_pwd is None:
+      pynng.check_err(lib.conf_quic_create(conf_quic_p, to_char(cafile), to_char(certfile), to_char(keyfile), to_char("")))
+      _quic_tls_config = conf_quic_p[0]
+    else:
+      pynng.check_err(lib.conf_quic_create(conf_quic_p, to_char(cafile), to_char(certfile), to_char(keyfile), to_char(key_pwd)))
+      _quic_tls_config = conf_quic_p[0]
+      #_quic_tls_config = lib.conf_quic_create(to_char(cafile), to_char(certfile), to_char(keyfile), pynng.ffi.NULL, to_char(verify_peer), to_char(multi_stream), to_char(qos_first), qkeepalive, qconnect_timeout, qdiscon_timeout, qidle_timeout)
     super().__init__(**kwargs)
 
 class Mqtt_tcp(Socket):

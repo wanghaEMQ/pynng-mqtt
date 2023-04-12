@@ -913,6 +913,13 @@ struct conf_quic {
  uint32_t qidle_timeout;
  uint8_t qcongestion_control;
 };
+/*
+conf_quic* conf_quic_create(char *cafile, char *certfile,
+    char *keyfile, char *key_pwd, bool verify_peer, bool multi_stream, bool qos_first,
+    int qkeepalive, int qconnect_timeout, int qdiscon_timeout, int qidle_timeout);
+    */
+void conf_quic_create(conf_quic **, char *cafile, char *certfile,
+    char *keyfile, char *key_pwd);
 int nng_mqttv5_quic_client_open(nng_socket *, const char *url);
 int nng_mqttv5_quic_client_open_conf(
     nng_socket *sock, const char *url, conf_quic *conf);
