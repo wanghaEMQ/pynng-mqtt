@@ -76,6 +76,7 @@ def build_nng(cmake_args):
         '-DNNG_ENABLE_TLS=ON',
         '-DNNG_TESTS=OFF',
         '-DNNG_TOOLS=OFF',
+        '-DNNG_ENABLE_QUIC=ON',
         '-DCMAKE_BUILD_TYPE=Release',
         '-DMBEDTLS_ROOT_DIR={}/mbedtls/prefix/'.format(THIS_DIR),
         '..',
