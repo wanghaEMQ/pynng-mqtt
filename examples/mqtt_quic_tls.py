@@ -8,17 +8,12 @@ This is the only reliable messaging pattern in the suite, as it automatically wi
 import sys
 import pynng
 import asyncio
-import signal
 
 helper = "Usage:\n\tmqttsub.py <topic> <qos>"
 
 address = "mqtt-quic://432121.xyz:14567"
 
 """
-          cafile = "/home/wangha/docu/nanomq/etc/certs/cacert.pem",
-          certfile = "/home/wangha/docu/nanomq/etc/certs/client-cert.pem",
-          keyfile = "/home/wangha/docu/nanomq/etc/certs/client-key.pem",
-          key_pwd = None,
           verify_peer = to_char("0"),
           multi_stream = to_char("0"),
           qos_first = to_char("0"),
@@ -29,7 +24,11 @@ address = "mqtt-quic://432121.xyz:14567"
 """
 
 async def main():
-  with pynng.Mqtt_quic_tls(address) as mqtt:
+  with pynng.Mqtt_quic_tls(address,
+          cafile = "/home/wangha/docu/nanomq/etc/certs/cacert.pem",
+          certfile = "/home/wangha/docu/nanomq/etc/certs/client-cert.pem",
+          keyfile = "/home/wangha/docu/nanomq/etc/certs/client-key.pem",
+          key_pwd = None) as mqtt:
     print(f"Make a connect msg")
     connmsg = pynng.Mqttmsg()
     connmsg.set_packet_type(1) # 0x01 Connect
