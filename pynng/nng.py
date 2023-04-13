@@ -1089,8 +1089,8 @@ class Mqtt_quic_tls(Socket):
     else:
       pynng.check_err(lib.conf_quic_create(conf_quic_p, to_char(cafile), to_char(certfile), to_char(keyfile), to_char(key_pwd)))
       _quic_tls_config = conf_quic_p[0]
-      #_quic_tls_config = lib.conf_quic_create(to_char(cafile), to_char(certfile), to_char(keyfile), pynng.ffi.NULL, to_char(verify_peer), to_char(multi_stream), to_char(qos_first), qkeepalive, qconnect_timeout, qdiscon_timeout, qidle_timeout)
     super().__init__(**kwargs)
+    #_quic_tls_config = lib.conf_quic_create(to_char(cafile), to_char(certfile), to_char(keyfile), pynng.ffi.NULL, to_char(verify_peer), to_char(multi_stream), to_char(qos_first), qkeepalive, qconnect_timeout, qdiscon_timeout, qidle_timeout)
 
 class Mqtt_tcp(Socket):
   _tcpopener = lib.nng_mqtt_client_open
@@ -1689,6 +1689,9 @@ class Mqttmsg(Message):
 
   def set_connect_keep_alive(self, ka):
     lib.nng_mqtt_msg_set_connect_keep_alive(self._nng_msg, ka)
+
+  def set_connect_client_id(self, client_id):
+    lib.nng_mqtt_msg_set_connect_client_id(self._nng_msg, to_char(client_id))
 
   def set_connect_username(self, username):
     lib.nng_mqtt_msg_set_connect_user_name(self._nng_msg, to_char(username))
