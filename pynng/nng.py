@@ -1084,10 +1084,10 @@ class Mqtt_quic_tls(Socket):
     global _quic_tls_config
     conf_quic_p = pynng.ffi.new('conf_quic **')
     if key_pwd is None:
-      pynng.check_err(lib.conf_quic_create(conf_quic_p, to_char(cafile), to_char(certfile), to_char(keyfile), to_char("")))
+      pynng.check_err(lib.conf_quic_tls_create(conf_quic_p, to_char(cafile), to_char(certfile), to_char(keyfile), to_char("")))
       _quic_tls_config = conf_quic_p[0]
     else:
-      pynng.check_err(lib.conf_quic_create(conf_quic_p, to_char(cafile), to_char(certfile), to_char(keyfile), to_char(key_pwd)))
+      pynng.check_err(lib.conf_quic_tls_create(conf_quic_p, to_char(cafile), to_char(certfile), to_char(keyfile), to_char(key_pwd)))
       _quic_tls_config = conf_quic_p[0]
     super().__init__(**kwargs)
     #_quic_tls_config = lib.conf_quic_create(to_char(cafile), to_char(certfile), to_char(keyfile), pynng.ffi.NULL, to_char(verify_peer), to_char(multi_stream), to_char(qos_first), qkeepalive, qconnect_timeout, qdiscon_timeout, qidle_timeout)
