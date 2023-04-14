@@ -24,7 +24,8 @@ if sys.platform == 'win32':
 else:
     objects = ['./nng/build/libnng.a', "./mbedtls/prefix/lib/libmbedtls.a",
                "./mbedtls/prefix/lib/libmbedx509.a", "./mbedtls/prefix/lib/libmbedcrypto.a",
-               "/usr/local/lib/libmsquic.so", "/usr/local/lib/libcrypto.so", "/usr/local/lib/libssl.so"]
+               "/usr/local/lib/libmsquic.so", "/usr/local/lib/libcrypto.a",
+               "/usr/local/lib/libssl.a"]
     libraries = ['pthread']
     machine = os.uname().machine
     # this is a pretty heuristic... but let's go with it anyway.
