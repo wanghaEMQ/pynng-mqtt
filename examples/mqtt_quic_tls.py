@@ -14,9 +14,9 @@ helper = "Usage:\n\tmqttsub.py <topic> <qos>"
 address = "mqtt-quic://432121.xyz:14567"
 
 """
-          verify_peer = to_char("0"),
-          multi_stream = to_char("0"),
-          qos_first = to_char("0"),
+          verify_peer = False,
+          multi_stream = False,
+          qos_first = False,
           qkeepalive = 60,
           qconnect_timeout = 30,
           qdiscon_timeout = 60,
@@ -25,14 +25,15 @@ address = "mqtt-quic://432121.xyz:14567"
 
 async def main():
   with pynng.Mqtt_quic_tls(address,
-          cafile = "/home/wangha/docu/nanomq/etc/certs/cacert.pem",
-          certfile = "/home/wangha/docu/nanomq/etc/certs/client-cert.pem",
-          keyfile = "/home/wangha/docu/nanomq/etc/certs/client-key.pem",
+          cafile = "/root/certs/cacert.pem",
+          certfile = "/root/certs/client-cert.pem",
+          keyfile = "/root/certs/client-key.pem",
           key_pwd = None) as mqtt:
     print(f"Make a connect msg")
     connmsg = pynng.Mqttmsg()
     connmsg.set_packet_type(1) # 0x01 Connect
     connmsg.set_connect_proto_version(4) # MqttV311
+    connmsg.set_connect_client_id("test-pynng")
     connmsg.set_connect_username("alvin")
     connmsg.set_connect_password("alvin123")
     connmsg.set_connect_keep_alive(60)
