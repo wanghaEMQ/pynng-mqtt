@@ -79,3 +79,10 @@ python3 example/mqtt_tcp_sub.py topic 1
 python3 example/mqtt_tcp_pub.py topic 1 aaa
 ```
 
+Debug
+-----
+
+Cleaning the caches created by pip manually
+```
+rm -rf __pycache__ build pynng/__pycache__ pynng/_nng.abi3.so mbedtls/build nng/build .eggs/
+```
