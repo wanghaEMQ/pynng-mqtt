@@ -8,12 +8,12 @@ The msgs send or receive on QUIC by default in this project.
 Requirements
 -----
 
++ MsQuic
 + NanoSDK
-+ Pynng
-+ curio (option, yes if you want build the demo)
-+ Libssl
++ asyncio (option, yes if you want build the demo)
++ Libssl-dev
 + Python3 version >= 3.6
-+ Msquic
++ Python3-pip
 
 Quick start
 -----
@@ -46,27 +46,36 @@ make -j8
 sudo make install
 ```
 
-Make sure libmsquic.so has been installed.
-
 Install python-dev (pynng-requires)
 
 ```
 sudo apt install python3-dev
 ```
 
-Go back to the path of pynng-mqtt and install.
+Go back to the root path of pynng-mqtt and install.
 
 ```
-pip3 install --user curio (option, if you want build the demo)
+pip3 install --user asyncio (option, if you want build the demo)
 pip3 install -e .
 ```
 
 Now. We have done the installation and enjoy it.
 
 ```
-# Mqtt subscribe
-python3 example/mqttsub.py topic 1
-# Mqtt publish
-python3 example/mqttpub.py topic 1 aaa
+# MQTT over QUIC
+# Subscriber
+python3 example/mqtt_quic_sub.py topic 1
+# Publisher
+python3 example/mqtt_quic_pub.py topic 1 aaa
+# TLS configuration
+python3 example/mqtt_quic_tls.py topic 1
+```
+
+```
+# MQTT over TCP
+# Subscriber
+python3 example/mqtt_tcp_sub.py topic 1
+# Publisher
+python3 example/mqtt_tcp_pub.py topic 1 aaa
 ```
 
