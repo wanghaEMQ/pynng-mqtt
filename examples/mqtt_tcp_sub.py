@@ -7,11 +7,11 @@ This is the only reliable messaging pattern in the suite, as it automatically wi
 """
 import sys
 import pynng
-import curio
+import asyncio
 
 helper = "Usage:\n\tmqttsub.py <topic> <qos>"
 
-address = "mqtt-tcp://192.168.1.238:1883"
+address = "mqtt-tcp://432121.xyz:1883"
 
 async def main():
   with pynng.Mqtt_tcp(address) as mqtt:
@@ -25,7 +25,7 @@ async def main():
     print(f"Connection packet sent.")
     submsg = pynng.Mqttmsg()
     submsg.set_packet_type(8) # 0x08 Subscribe
-    submsg.set_subscribe_topic(sys.argv[1], int(sys.argv[2])) # Topic and qos
+    submsg.set_subscribe_topic(sys.argv[1], len(sys.argv[1]), int(sys.argv[2]), 0, 0, 0) # Topic, qos, noLocal, retainAsPublish, retainHandling
     await mqtt.asend_msg(submsg)
     print(f"Subscribe packet sent.")
     while True:
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     print(helper)
     exit(0)
   try:
-    curio.run(main)
+    asyncio.run(main())
   except KeyboardInterrupt:
     # that's the way the program *should* end
     exit(0)
