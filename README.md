@@ -11,7 +11,6 @@ Requirements
 + MsQuic
 + NanoSDK
 + asyncio (option, yes if you want build the demo)
-+ Libssl-dev
 + Python3 version >= 3.6
 + Python3-pip
 
@@ -26,12 +25,6 @@ git clone https://github.com/wanghaEMQ/pynng-mqtt.git
 # Update submodule
 cd pynng-mqtt
 git submodule update --init --recursive
-```
-
-Install libssl. (msquic requires)
-
-```
-sudo apt install libssl
 ```
 
 Install msquic to system.
