@@ -57,19 +57,19 @@ Now. We have done the installation and enjoy it.
 ```
 # MQTT over QUIC
 # Subscriber
-python3 example/mqtt_quic_sub.py topic 1
+python3 examples/mqtt_quic_sub.py topic 1
 # Publisher
-python3 example/mqtt_quic_pub.py topic 1 aaa
+python3 examples/mqtt_quic_pub.py topic 1 aaa
 # TLS configuration
-python3 example/mqtt_quic_tls.py topic 1
+python3 examples/mqtt_quic_tls.py topic 1
 ```
 
 ```
 # MQTT over TCP
 # Subscriber
-python3 example/mqtt_tcp_sub.py topic 1
+python3 examples/mqtt_tcp_sub.py topic 1
 # Publisher
-python3 example/mqtt_tcp_pub.py topic 1 aaa
+python3 examples/mqtt_tcp_pub.py topic 1 aaa
 ```
 
 Debug
